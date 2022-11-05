@@ -14,10 +14,9 @@ bool expansion = false;
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-
 // Chassis constructor
 Drive chassis (
-  // Left Chassis Ports (negative port will reverse it!)
+  // Left Chassis Ports (negative port will reverse it!)`
   //   the first port is the sensored port (when trackers are not used!)
   {2, 5}
 
@@ -66,7 +65,7 @@ Drive chassis (
  */
 void initialize() {
   // Print our branding over your terminal :D
-  ez::print_ez_template();
+ //ez::print_ez_template();
   
   pros::delay(500); // Stop the user from doing anything while legacy ports configure.
 
@@ -82,7 +81,7 @@ void initialize() {
   // chassis.set_right_curve_buttons(pros::E_CONTROLLER_DIGITAL_Y,    pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
-  ez::as::auton_selector.add_autons({
+  //ez::as::auton_selector.add_autons({
     // Auton("Example Drive\n\nDrive forward and come back.", drive_example),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
     // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
@@ -90,13 +89,18 @@ void initialize() {
     // Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-    Auton("Robot in front of roller", autonAtRoller),
-    Auton("Robot doesn't start in front of roller", autonNotRoller),
-  });
+  lv_obj_t *chart = lv_chart_create(lv_scr_act(), nullptr);
+  lv_obj_set_size(chart, 500, 200);
+  lv_obj_align(chart, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+
+  lv_chart_series_t *series1 = lv_chart_add_series(chart, LV_COLOR_BLUE);
+
+  lv_chart_set_range(chart, 0, 650);
 
   // Initialize chassis and auton selector
   chassis.initialize();
-  ez::as::initialize();
+  //ez::as::initialize();
 }
 
 
@@ -163,11 +167,15 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 
+
+
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
 
   while (true) {
+
+
 
     chassis.arcade_standard(ez::SPLIT); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
