@@ -8,6 +8,7 @@
 bool spinIntake = false;
 bool spinFlywheel = false;
 bool expansion = false;
+bool indexer = false;
 
 /////
 // For instalattion, upgrading, documentations and tutorials, check out website!
@@ -169,7 +170,7 @@ void opcontrol() {
 
   while (true) {
 
-    chassis.arcade_standard(ez::SPLIT); // Tank control
+    chassis.arcade_flipped(ez::SPLIT); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
     // chassis.arcade_flipped(ez::SPLIT); // Flipped split arcade
@@ -182,6 +183,7 @@ void opcontrol() {
 		bool INTAKE = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1);
 		bool FLYWHEEL = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2);
 		bool EXPANSION = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2);
+    bool INDEXER = controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1);
     
     if(INTAKE) {
       spinIntake ? Intake.move(-127) : Intake.move(0);
@@ -194,6 +196,12 @@ void opcontrol() {
       spinFlywheel = !spinFlywheel;
     }
 
+    
+    if (INDEXER) {
+      indexer ? Intake.move(127) : Intake.move(0);
+      indexer = !indexer;
+    }
+
     if (EXPANSION) {
       expansion1.set_value(!expansion);
       expansion2.set_value(!expansion);
@@ -203,3 +211,4 @@ void opcontrol() {
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }
+
